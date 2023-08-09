@@ -32,8 +32,8 @@ if (!function_exists('hash_equals')) {
             $kLen = mb_strlen($knownString, '8bit');
             $uLen = mb_strlen($userString, '8bit');
         } else {
-            $kLen = strlen($knownString);
-            $uLen = strlen($userString);
+            $kLen = strlen((string) $knownString);
+            $uLen = strlen((string) $userString);
         }
         if ($kLen !== $uLen) {
             return false;

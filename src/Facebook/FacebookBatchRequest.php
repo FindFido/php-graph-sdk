@@ -97,7 +97,7 @@ class FacebookBatchRequest extends FacebookRequest implements IteratorAggregate,
         // File uploads
         $attachedFiles = $this->extractFileAttachments($request);
 
-        $name = isset($options['name']) ? $options['name'] : null;
+        $name = $options['name'] ?? null;
 
         unset($options['name']);
 
@@ -116,7 +116,6 @@ class FacebookBatchRequest extends FacebookRequest implements IteratorAggregate,
     /**
      * Ensures that the FacebookApp and access token fall back when missing.
      *
-     * @param FacebookRequest $request
      *
      * @throws FacebookSDKException
      */
@@ -142,10 +141,8 @@ class FacebookBatchRequest extends FacebookRequest implements IteratorAggregate,
     /**
      * Extracts the files from a request.
      *
-     * @param FacebookRequest $request
      *
      * @return string|null
-     *
      * @throws FacebookSDKException
      */
     public function extractFileAttachments(FacebookRequest $request)
@@ -212,7 +209,7 @@ class FacebookBatchRequest extends FacebookRequest implements IteratorAggregate,
             $requests[] = $this->requestEntityToBatchArray($request['request'], $options, $request['attached_files']);
         }
 
-        return json_encode($requests);
+        return json_encode($requests, JSON_THROW_ON_ERROR);
     }
 
     /**
@@ -317,6 +314,6 @@ class FacebookBatchRequest extends FacebookRequest implements IteratorAggregate,
      */
     public function offsetGet($offset)
     {
-        return isset($this->requests[$offset]) ? $this->requests[$offset] : null;
+        return $this->requests[$offset] ?? null;
     }
 }

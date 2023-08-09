@@ -35,19 +35,9 @@ use Facebook\Exceptions\FacebookSDKException;
 class FacebookResponse
 {
     /**
-     * @var int The HTTP status code response from Graph.
-     */
-    protected $httpStatusCode;
-
-    /**
      * @var array The headers returned from Graph.
      */
     protected $headers;
-
-    /**
-     * @var string The raw body of the response from Graph.
-     */
-    protected $body;
 
     /**
      * @var array The decoded body of the Graph response.
@@ -72,11 +62,9 @@ class FacebookResponse
      * @param int|null        $httpStatusCode
      * @param array|null      $headers
      */
-    public function __construct(FacebookRequest $request, $body = null, $httpStatusCode = null, array $headers = [])
+    public function __construct(FacebookRequest $request, protected $body = null, protected $httpStatusCode = null, array $headers = [])
     {
         $this->request = $request;
-        $this->body = $body;
-        $this->httpStatusCode = $httpStatusCode;
         $this->headers = $headers;
 
         $this->decodeBody();
@@ -169,7 +157,7 @@ class FacebookResponse
      */
     public function getETag()
     {
-        return isset($this->headers['ETag']) ? $this->headers['ETag'] : null;
+        return $this->headers['ETag'] ?? null;
     }
 
     /**
@@ -179,7 +167,7 @@ class FacebookResponse
      */
     public function getGraphVersion()
     {
-        return isset($this->headers['Facebook-API-Version']) ? $this->headers['Facebook-API-Version'] : null;
+        return $this->headers['Facebook-API-Version'] ?? null;
     }
 
     /**
@@ -197,7 +185,7 @@ class FacebookResponse
      *
      * @throws FacebookSDKException
      */
-    public function throwException()
+    public function throwException(): never
     {
         throw $this->thrownException;
     }
@@ -233,7 +221,7 @@ class FacebookResponse
      */
     public function decodeBody()
     {
-        $this->decodedBody = json_decode($this->body, true);
+        $this->decodedBody = json_decode($this->body, true, 512, JSON_THROW_ON_ERROR);
 
         if ($this->decodedBody === null) {
             $this->decodedBody = [];

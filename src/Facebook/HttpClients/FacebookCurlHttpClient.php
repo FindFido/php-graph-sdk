@@ -74,7 +74,7 @@ class FacebookCurlHttpClient implements FacebookHttpClientInterface
         }
 
         // Separate the raw headers from the raw body
-        list($rawHeaders, $rawBody) = $this->extractResponseHeadersAndBody();
+        [$rawHeaders, $rawBody] = $this->extractResponseHeadersAndBody();
 
         $this->closeConnection();
 

@@ -38,42 +38,37 @@ class FacebookClient
     /**
      * @const string Production Graph API URL.
      */
-    const BASE_GRAPH_URL = 'https://graph.facebook.com';
+    final public const BASE_GRAPH_URL = 'https://graph.facebook.com';
 
     /**
      * @const string Graph API URL for video uploads.
      */
-    const BASE_GRAPH_VIDEO_URL = 'https://graph-video.facebook.com';
+    final public const BASE_GRAPH_VIDEO_URL = 'https://graph-video.facebook.com';
 
     /**
      * @const string Beta Graph API URL.
      */
-    const BASE_GRAPH_URL_BETA = 'https://graph.beta.facebook.com';
+    final public const BASE_GRAPH_URL_BETA = 'https://graph.beta.facebook.com';
 
     /**
      * @const string Beta Graph API URL for video uploads.
      */
-    const BASE_GRAPH_VIDEO_URL_BETA = 'https://graph-video.beta.facebook.com';
+    final public const BASE_GRAPH_VIDEO_URL_BETA = 'https://graph-video.beta.facebook.com';
 
     /**
      * @const int The timeout in seconds for a normal request.
      */
-    const DEFAULT_REQUEST_TIMEOUT = 60;
+    final public const DEFAULT_REQUEST_TIMEOUT = 60;
 
     /**
      * @const int The timeout in seconds for a request that contains file uploads.
      */
-    const DEFAULT_FILE_UPLOAD_REQUEST_TIMEOUT = 3600;
+    final public const DEFAULT_FILE_UPLOAD_REQUEST_TIMEOUT = 3600;
 
     /**
      * @const int The timeout in seconds for a request that contains video uploads.
      */
-    const DEFAULT_VIDEO_UPLOAD_REQUEST_TIMEOUT = 7200;
-
-    /**
-     * @var bool Toggle to use Graph beta url.
-     */
-    protected $enableBetaMode = false;
+    final public const DEFAULT_VIDEO_UPLOAD_REQUEST_TIMEOUT = 7200;
 
     /**
      * @var FacebookHttpClientInterface HTTP client handler.
@@ -89,18 +84,15 @@ class FacebookClient
      * Instantiates a new FacebookClient object.
      *
      * @param FacebookHttpClientInterface|null $httpClientHandler
-     * @param boolean                          $enableBeta
+     * @param boolean $enableBetaMode
      */
-    public function __construct(FacebookHttpClientInterface $httpClientHandler = null, $enableBeta = false)
+    public function __construct(FacebookHttpClientInterface $httpClientHandler = null, protected $enableBetaMode = false)
     {
         $this->httpClientHandler = $httpClientHandler ?: $this->detectHttpClientHandler();
-        $this->enableBetaMode = $enableBeta;
     }
 
     /**
      * Sets the HTTP client handler.
-     *
-     * @param FacebookHttpClientInterface $httpClientHandler
      */
     public function setHttpClientHandler(FacebookHttpClientInterface $httpClientHandler)
     {
@@ -156,7 +148,6 @@ class FacebookClient
     /**
      * Prepares the request for sending to the client handler.
      *
-     * @param FacebookRequest $request
      *
      * @return array
      */
@@ -189,19 +180,17 @@ class FacebookClient
     /**
      * Makes the request to Graph and returns the result.
      *
-     * @param FacebookRequest $request
      *
      * @return FacebookResponse
-     *
      * @throws FacebookSDKException
      */
     public function sendRequest(FacebookRequest $request)
     {
-        if (get_class($request) === 'Facebook\FacebookRequest') {
+        if ($request::class === \Facebook\FacebookRequest::class) {
             $request->validateAccessToken();
         }
 
-        list($url, $method, $headers, $body) = $this->prepareRequestMessage($request);
+        [$url, $method, $headers, $body] = $this->prepareRequestMessage($request);
 
         // Since file uploads can take a while, we need to give more time for uploads
         $timeOut = static::DEFAULT_REQUEST_TIMEOUT;
@@ -234,10 +223,8 @@ class FacebookClient
     /**
      * Makes a batched request to Graph and returns the result.
      *
-     * @param FacebookBatchRequest $request
      *
      * @return FacebookBatchResponse
-     *
      * @throws FacebookSDKException
      */
     public function sendBatchRequest(FacebookBatchRequest $request)

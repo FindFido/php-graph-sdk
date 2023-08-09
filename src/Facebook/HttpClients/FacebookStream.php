@@ -45,8 +45,6 @@ class FacebookStream
 
     /**
      * Make a new context stream reference instance
-     *
-     * @param array $options
      */
     public function streamContextCreate(array $options)
     {

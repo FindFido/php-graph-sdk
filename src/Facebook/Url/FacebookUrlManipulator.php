@@ -58,9 +58,9 @@ class FacebookUrlManipulator
         }
 
         $scheme = isset($parts['scheme']) ? $parts['scheme'] . '://' : '';
-        $host = isset($parts['host']) ? $parts['host'] : '';
+        $host = $parts['host'] ?? '';
         $port = isset($parts['port']) ? ':' . $parts['port'] : '';
-        $path = isset($parts['path']) ? $parts['path'] : '';
+        $path = $parts['path'] ?? '';
         $fragment = isset($parts['fragment']) ? '#' . $parts['fragment'] : '';
 
         return $scheme . $host . $port . $path . $query . $fragment;
@@ -80,11 +80,11 @@ class FacebookUrlManipulator
             return $url;
         }
 
-        if (strpos($url, '?') === false) {
+        if (!str_contains($url, '?')) {
             return $url . '?' . http_build_query($newParams, null, '&');
         }
 
-        list($path, $query) = explode('?', $url, 2);
+        [$path, $query] = explode('?', $url, 2);
         $existingParams = [];
         parse_str($query, $existingParams);
 
@@ -150,7 +150,7 @@ class FacebookUrlManipulator
             return $string;
         }
 
-        return strpos($string, '/') === 0 ? $string : '/' . $string;
+        return str_starts_with($string, '/') ? $string : '/' . $string;
     }
 
     /**

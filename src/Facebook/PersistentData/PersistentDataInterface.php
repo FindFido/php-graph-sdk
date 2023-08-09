@@ -43,7 +43,6 @@ interface PersistentDataInterface
      * Set a value in the persistent data store.
      *
      * @param string $key
-     * @param mixed  $value
      */
-    public function set($key, $value);
+    public function set($key, mixed $value);
 }

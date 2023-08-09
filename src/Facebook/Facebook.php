@@ -53,22 +53,22 @@ class Facebook
     /**
      * @const string Version number of the Facebook PHP SDK.
      */
-    const VERSION = '5.7.0';
+    final public const VERSION = '5.7.0';
 
     /**
      * @const string Default Graph API version for requests.
      */
-    const DEFAULT_GRAPH_VERSION = 'v2.10';
+    final public const DEFAULT_GRAPH_VERSION = 'v2.10';
 
     /**
      * @const string The name of the environment variable that contains the app ID.
      */
-    const APP_ID_ENV_NAME = 'FACEBOOK_APP_ID';
+    final public const APP_ID_ENV_NAME = 'FACEBOOK_APP_ID';
 
     /**
      * @const string The name of the environment variable that contains the app secret.
      */
-    const APP_SECRET_ENV_NAME = 'FACEBOOK_APP_SECRET';
+    final public const APP_SECRET_ENV_NAME = 'FACEBOOK_APP_SECRET';
 
     /**
      * @var FacebookApp The FacebookApp entity.
@@ -118,7 +118,6 @@ class Facebook
     /**
      * Instantiates a new Facebook super-class object.
      *
-     * @param array $config
      *
      * @throws FacebookSDKException
      */
@@ -221,8 +220,6 @@ class Facebook
 
     /**
      * Changes the URL detection handler.
-     *
-     * @param UrlDetectionInterface $urlDetectionHandler
      */
     private function setUrlDetectionHandler(UrlDetectionInterface $urlDetectionHandler)
     {
@@ -346,13 +343,11 @@ class Facebook
      * Sends a POST request to Graph and returns the result.
      *
      * @param string                  $endpoint
-     * @param array                   $params
      * @param AccessToken|string|null $accessToken
      * @param string|null             $eTag
      * @param string|null             $graphVersion
      *
      * @return FacebookResponse
-     *
      * @throws FacebookSDKException
      */
     public function post($endpoint, array $params = [], $accessToken = null, $eTag = null, $graphVersion = null)
@@ -371,13 +366,11 @@ class Facebook
      * Sends a DELETE request to Graph and returns the result.
      *
      * @param string                  $endpoint
-     * @param array                   $params
      * @param AccessToken|string|null $accessToken
      * @param string|null             $eTag
      * @param string|null             $graphVersion
      *
      * @return FacebookResponse
-     *
      * @throws FacebookSDKException
      */
     public function delete($endpoint, array $params = [], $accessToken = null, $eTag = null, $graphVersion = null)
@@ -451,13 +444,11 @@ class Facebook
      *
      * @param string                  $method
      * @param string                  $endpoint
-     * @param array                   $params
      * @param AccessToken|string|null $accessToken
      * @param string|null             $eTag
      * @param string|null             $graphVersion
      *
      * @return FacebookResponse
-     *
      * @throws FacebookSDKException
      */
     public function sendRequest($method, $endpoint, array $params = [], $accessToken = null, $eTag = null, $graphVersion = null)
@@ -472,12 +463,10 @@ class Facebook
     /**
      * Sends a batched request to Graph and returns the result.
      *
-     * @param array                   $requests
      * @param AccessToken|string|null $accessToken
      * @param string|null             $graphVersion
      *
      * @return FacebookBatchResponse
-     *
      * @throws FacebookSDKException
      */
     public function sendBatchRequest(array $requests, $accessToken = null, $graphVersion = null)
@@ -520,13 +509,11 @@ class Facebook
      *
      * @param string                  $method
      * @param string                  $endpoint
-     * @param array                   $params
      * @param AccessToken|string|null $accessToken
      * @param string|null             $eTag
      * @param string|null             $graphVersion
      *
      * @return FacebookRequest
-     *
      * @throws FacebookSDKException
      */
     public function request($method, $endpoint, array $params = [], $accessToken = null, $eTag = null, $graphVersion = null)
@@ -610,13 +597,11 @@ class Facebook
     /**
      * Attempts to upload a chunk of a file in $retryCountdown tries.
      *
-     * @param FacebookResumableUploader $uploader
      * @param string $endpoint
      * @param FacebookTransferChunk $chunk
      * @param int $retryCountdown
      *
      * @return FacebookTransferChunk
-     *
      * @throws FacebookSDKException
      */
     private function maxTriesTransfer(FacebookResumableUploader $uploader, $endpoint, FacebookTransferChunk $chunk, $retryCountdown)

@@ -36,11 +36,6 @@ class GraphRawResponse
     protected $headers;
 
     /**
-     * @var string The raw response body.
-     */
-    protected $body;
-
-    /**
      * @var int The HTTP status response code.
      */
     protected $httpResponseCode;
@@ -52,7 +47,7 @@ class GraphRawResponse
      * @param string       $body           The raw response body.
      * @param int          $httpStatusCode The HTTP response code (if sending headers as parsed array).
      */
-    public function __construct($headers, $body, $httpStatusCode = null)
+    public function __construct($headers, protected $body, $httpStatusCode = null)
     {
         if (is_numeric($httpStatusCode)) {
             $this->httpResponseCode = (int)$httpStatusCode;
@@ -63,8 +58,6 @@ class GraphRawResponse
         } else {
             $this->setHeadersFromString($headers);
         }
-
-        $this->body = $body;
     }
 
     /**
@@ -105,7 +98,7 @@ class GraphRawResponse
     public function setHttpResponseCodeFromHeader($rawResponseHeader)
     {
         // https://tools.ietf.org/html/rfc7230#section-3.1.2
-        list($version, $status, $reason) = array_pad(explode(' ', $rawResponseHeader, 3), 3, null);
+        [$version, $status, $reason] = array_pad(explode(' ', $rawResponseHeader, 3), 3, null);
         $this->httpResponseCode = (int) $status;
     }
 
@@ -127,10 +120,10 @@ class GraphRawResponse
 
         $headerComponents = explode("\n", $rawHeader);
         foreach ($headerComponents as $line) {
-            if (strpos($line, ': ') === false) {
+            if (!str_contains($line, ': ')) {
                 $this->setHttpResponseCodeFromHeader($line);
             } else {
-                list($key, $value) = explode(': ', $line, 2);
+                [$key, $value] = explode(': ', $line, 2);
                 $this->headers[$key] = $value;
             }
         }

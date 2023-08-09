@@ -36,7 +36,7 @@ use ArrayIterator;
 use Countable;
 use IteratorAggregate;
 
-class Collection implements ArrayAccess, Countable, IteratorAggregate
+class Collection implements ArrayAccess, Countable, IteratorAggregate, \Stringable
 {
     /**
      * The items contained in the collection.
@@ -47,8 +47,6 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
 
     /**
      * Create a new collection.
-     *
-     * @param array $items
      */
     public function __construct(array $items = [])
     {
@@ -63,13 +61,9 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
      *
      * @return mixed
      */
-    public function getField($name, $default = null)
+    public function getField($name, mixed $default = null)
     {
-        if (isset($this->items[$name])) {
-            return $this->items[$name];
-        }
-
-        return $default;
+        return $this->items[$name] ?? $default;
     }
 
     /**
@@ -83,7 +77,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
      * @deprecated 5.0.0 getProperty() has been renamed to getField()
      * @todo v6: Remove this method
      */
-    public function getProperty($name, $default = null)
+    public function getProperty($name, mixed $default = null)
     {
         return $this->getField($name, $default);
     }
@@ -128,15 +122,12 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
      */
     public function asArray()
     {
-        return array_map(function ($value) {
-            return $value instanceof Collection ? $value->asArray() : $value;
-        }, $this->items);
+        return array_map(fn($value) => $value instanceof Collection ? $value->asArray() : $value, $this->items);
     }
 
     /**
      * Run a map over each of the items.
      *
-     * @param \Closure $callback
      *
      * @return static
      */
@@ -180,11 +171,10 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     /**
      * Determine if an item exists at an offset.
      *
-     * @param mixed $key
      *
      * @return bool
      */
-    public function offsetExists($key)
+    public function offsetExists(mixed $key)
     {
         return array_key_exists($key, $this->items);
     }
@@ -192,11 +182,10 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     /**
      * Get an item at a given offset.
      *
-     * @param mixed $key
      *
      * @return mixed
      */
-    public function offsetGet($key)
+    public function offsetGet(mixed $key)
     {
         return $this->items[$key];
     }
@@ -204,12 +193,10 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     /**
      * Set the item at a given offset.
      *
-     * @param mixed $key
-     * @param mixed $value
      *
      * @return void
      */
-    public function offsetSet($key, $value)
+    public function offsetSet(mixed $key, mixed $value)
     {
         if (is_null($key)) {
             $this->items[] = $value;
@@ -235,7 +222,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
      *
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->asJson();
     }

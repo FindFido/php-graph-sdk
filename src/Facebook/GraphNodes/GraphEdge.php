@@ -45,16 +45,6 @@ class GraphEdge extends Collection
     protected $metaData = [];
 
     /**
-     * @var string|null The parent Graph edge endpoint that generated the list.
-     */
-    protected $parentEdgeEndpoint;
-
-    /**
-     * @var string|null The subclass of the child GraphNode's.
-     */
-    protected $subclassName;
-
-    /**
      * Init this collection of GraphNode's.
      *
      * @param FacebookRequest $request            The original request that generated this data.
@@ -63,12 +53,10 @@ class GraphEdge extends Collection
      * @param string|null     $parentEdgeEndpoint The parent Graph edge endpoint that generated the list.
      * @param string|null     $subclassName       The subclass of the child GraphNode's.
      */
-    public function __construct(FacebookRequest $request, array $data = [], array $metaData = [], $parentEdgeEndpoint = null, $subclassName = null)
+    public function __construct(FacebookRequest $request, array $data = [], array $metaData = [], protected $parentEdgeEndpoint = null, protected $subclassName = null)
     {
         $this->request = $request;
         $this->metaData = $metaData;
-        $this->parentEdgeEndpoint = $parentEdgeEndpoint;
-        $this->subclassName = $subclassName;
 
         parent::__construct($data);
     }
@@ -132,11 +120,7 @@ class GraphEdge extends Collection
      */
     public function getCursor($direction)
     {
-        if (isset($this->metaData['paging']['cursors'][$direction])) {
-            return $this->metaData['paging']['cursors'][$direction];
-        }
-
-        return null;
+        return $this->metaData['paging']['cursors'][$direction] ?? null;
     }
 
     /**
@@ -229,11 +213,7 @@ class GraphEdge extends Collection
      */
     public function getTotalCount()
     {
-        if (isset($this->metaData['summary']['total_count'])) {
-            return $this->metaData['summary']['total_count'];
-        }
-
-        return null;
+        return $this->metaData['summary']['total_count'] ?? null;
     }
 
     /**

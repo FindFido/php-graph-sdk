@@ -59,8 +59,6 @@ class FacebookCurl
 
     /**
      * Set an array of options to a curl resource
-     *
-     * @param array $options
      */
     public function setoptArray(array $options)
     {

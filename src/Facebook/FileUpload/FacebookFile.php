@@ -33,21 +33,6 @@ use Facebook\Exceptions\FacebookSDKException;
 class FacebookFile
 {
     /**
-     * @var string The path to the file on the system.
-     */
-    protected $path;
-
-    /**
-     * @var int The maximum bytes to read. Defaults to -1 (read all the remaining buffer).
-     */
-    private $maxLength;
-
-    /**
-     * @var int Seek to the specified offset before reading. If this number is negative, no seeking will occur and reading will start from the current position.
-     */
-    private $offset;
-
-    /**
      * @var resource The stream pointing to the file.
      */
     protected $stream;
@@ -55,17 +40,14 @@ class FacebookFile
     /**
      * Creates a new FacebookFile entity.
      *
-     * @param string $filePath
+     * @param string $path
      * @param int $maxLength
      * @param int $offset
      *
      * @throws FacebookSDKException
      */
-    public function __construct($filePath, $maxLength = -1, $offset = -1)
+    public function __construct(protected $path, private $maxLength = -1, private $offset = -1)
     {
-        $this->path = $filePath;
-        $this->maxLength = $maxLength;
-        $this->offset = $offset;
         $this->open();
     }
 

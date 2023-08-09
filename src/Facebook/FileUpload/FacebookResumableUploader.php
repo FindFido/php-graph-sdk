@@ -44,42 +44,26 @@ class FacebookResumableUploader
     protected $app;
 
     /**
-     * @var string
-     */
-    protected $accessToken;
-
-    /**
      * @var FacebookClient The Facebook client service.
      */
     protected $client;
 
     /**
-     * @var string Graph version to use for this request.
-     */
-    protected $graphVersion;
-
-    /**
-     * @param FacebookApp             $app
-     * @param FacebookClient          $client
      * @param AccessToken|string|null $accessToken
      * @param string                  $graphVersion
      */
-    public function __construct(FacebookApp $app, FacebookClient $client, $accessToken, $graphVersion)
+    public function __construct(FacebookApp $app, FacebookClient $client, protected $accessToken, protected $graphVersion)
     {
         $this->app = $app;
         $this->client = $client;
-        $this->accessToken = $accessToken;
-        $this->graphVersion = $graphVersion;
     }
 
     /**
      * Upload by chunks - start phase
      *
      * @param string $endpoint
-     * @param FacebookFile $file
      *
      * @return FacebookTransferChunk
-     *
      * @throws FacebookSDKException
      */
     public function start($endpoint, FacebookFile $file)
@@ -97,11 +81,9 @@ class FacebookResumableUploader
      * Upload by chunks - transfer phase
      *
      * @param string $endpoint
-     * @param FacebookTransferChunk $chunk
      * @param boolean $allowToThrow
      *
      * @return FacebookTransferChunk
-     *
      * @throws FacebookResponseException
      */
     public function transfer($endpoint, FacebookTransferChunk $chunk, $allowToThrow = false)

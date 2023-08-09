@@ -44,7 +44,7 @@ class FacebookRedirectLoginHelper
     /**
      * @const int The length of CSRF string to validate the login link.
      */
-    const CSRF_LENGTH = 32;
+    final public const CSRF_LENGTH = 32;
 
     /**
      * @var OAuth2Client The OAuth 2.0 client service.
@@ -328,6 +328,6 @@ class FacebookRedirectLoginHelper
      */
     private function getInput($key)
     {
-        return isset($_GET[$key]) ? $_GET[$key] : null;
+        return $_GET[$key] ?? null;
     }
 }

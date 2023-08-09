@@ -96,11 +96,7 @@ class SignedRequest
      */
     public function get($key, $default = null)
     {
-        if (isset($this->payload[$key])) {
-            return $this->payload[$key];
-        }
-
-        return $default;
+        return $this->payload[$key] ?? $default;
     }
 
     /**
@@ -126,15 +122,14 @@ class SignedRequest
     /**
      * Creates a signed request from an array of data.
      *
-     * @param array $payload
      *
      * @return string
      */
     public function make(array $payload)
     {
-        $payload['algorithm'] = isset($payload['algorithm']) ? $payload['algorithm'] : 'HMAC-SHA256';
-        $payload['issued_at'] = isset($payload['issued_at']) ? $payload['issued_at'] : time();
-        $encodedPayload = $this->base64UrlEncode(json_encode($payload));
+        $payload['algorithm'] ??= 'HMAC-SHA256';
+        $payload['issued_at'] ??= time();
+        $encodedPayload = $this->base64UrlEncode(json_encode($payload, JSON_THROW_ON_ERROR));
 
         $hashedSig = $this->hashSignature($encodedPayload);
         $encodedSig = $this->base64UrlEncode($hashedSig);
@@ -148,7 +143,7 @@ class SignedRequest
      */
     protected function parse()
     {
-        list($encodedSig, $encodedPayload) = $this->split();
+        [$encodedSig, $encodedPayload] = $this->split();
 
         // Signature validation
         $sig = $this->decodeSignature($encodedSig);
@@ -170,7 +165,7 @@ class SignedRequest
      */
     protected function split()
     {
-        if (strpos($this->rawSignedRequest, '.') === false) {
+        if (!str_contains($this->rawSignedRequest, '.')) {
             throw new FacebookSDKException('Malformed signed request.', 606);
         }
 
@@ -211,7 +206,7 @@ class SignedRequest
         $payload = $this->base64UrlDecode($encodedPayload);
 
         if ($payload) {
-            $payload = json_decode($payload, true);
+            $payload = json_decode($payload, true, 512, JSON_THROW_ON_ERROR);
         }
 
         if (!is_array($payload)) {

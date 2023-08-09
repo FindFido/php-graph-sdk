@@ -74,8 +74,8 @@ class FacebookResponseException extends FacebookSDKException
             $data = ['error' => $data];
         }
 
-        $code = isset($data['error']['code']) ? $data['error']['code'] : null;
-        $message = isset($data['error']['message']) ? $data['error']['message'] : 'Unknown error from Graph.';
+        $code = $data['error']['code'] ?? null;
+        $message = $data['error']['message'] ?? 'Unknown error from Graph.';
 
         if (isset($data['error']['error_subcode'])) {
             switch ($data['error']['error_subcode']) {
@@ -88,13 +88,13 @@ class FacebookResponseException extends FacebookSDKException
                 case 467:
                     return new static($response, new FacebookAuthenticationException($message, $code));
                 // Video upload resumable error
-                case 1363030:
-                case 1363019:
-                case 1363033:
-                case 1363021:
-                case 1363041:
+                case 1_363_030:
+                case 1_363_019:
+                case 1_363_033:
+                case 1_363_021:
+                case 1_363_041:
                     return new static($response, new FacebookResumableUploadException($message, $code));
-                case 1363037:
+                case 1_363_037:
                     $previousException = new FacebookResumableUploadException($message, $code);
 
                     $startOffset = isset($data['error']['error_data']['start_offset']) ? (int) $data['error']['error_data']['start_offset'] : null;
@@ -150,17 +150,12 @@ class FacebookResponseException extends FacebookSDKException
      * Checks isset and returns that or a default value.
      *
      * @param string $key
-     * @param mixed  $default
      *
      * @return mixed
      */
-    private function get($key, $default = null)
+    private function get($key, mixed $default = null)
     {
-        if (isset($this->responseData['error'][$key])) {
-            return $this->responseData['error'][$key];
-        }
-
-        return $default;
+        return $this->responseData['error'][$key] ?? $default;
     }
 
     /**

@@ -77,8 +77,6 @@ class FacebookBatchResponse extends FacebookResponse implements IteratorAggregat
     /**
      * The main batch response will be an array of requests so
      * we need to iterate over all the responses.
-     *
-     * @param array $responses
      */
     public function setResponses(array $responses)
     {
@@ -97,11 +95,11 @@ class FacebookBatchResponse extends FacebookResponse implements IteratorAggregat
      */
     public function addResponse($key, $response)
     {
-        $originalRequestName = isset($this->batchRequest[$key]['name']) ? $this->batchRequest[$key]['name'] : $key;
-        $originalRequest = isset($this->batchRequest[$key]['request']) ? $this->batchRequest[$key]['request'] : null;
+        $originalRequestName = $this->batchRequest[$key]['name'] ?? $key;
+        $originalRequest = $this->batchRequest[$key]['request'] ?? null;
 
-        $httpResponseBody = isset($response['body']) ? $response['body'] : null;
-        $httpResponseCode = isset($response['code']) ? $response['code'] : null;
+        $httpResponseBody = $response['body'] ?? null;
+        $httpResponseCode = $response['code'] ?? null;
         // @TODO With PHP 5.5 support, this becomes array_column($response['headers'], 'value', 'name')
         $httpResponseHeaders = isset($response['headers']) ? $this->normalizeBatchHeaders($response['headers']) : [];
 
@@ -150,14 +148,13 @@ class FacebookBatchResponse extends FacebookResponse implements IteratorAggregat
      */
     public function offsetGet($offset)
     {
-        return isset($this->responses[$offset]) ? $this->responses[$offset] : null;
+        return $this->responses[$offset] ?? null;
     }
 
     /**
      * Converts the batch header array into a standard format.
      * @TODO replace with array_column() when PHP 5.5 is supported.
      *
-     * @param array $batchHeaders
      *
      * @return array
      */

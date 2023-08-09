@@ -37,8 +37,6 @@ class RequestBodyUrlEncoded implements RequestBodyInterface
 
     /**
      * Creates a new GraphUrlEncodedBody entity.
-     *
-     * @param array $params
      */
     public function __construct(array $params)
     {

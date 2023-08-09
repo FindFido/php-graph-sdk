@@ -28,15 +28,8 @@ namespace Facebook\Authentication;
  *
  * @package Facebook
  */
-class AccessToken
+class AccessToken implements \Stringable
 {
-    /**
-     * The access token value.
-     *
-     * @var string
-     */
-    protected $value = '';
-
     /**
      * Date when token expires.
      *
@@ -47,12 +40,11 @@ class AccessToken
     /**
      * Create a new access token entity.
      *
-     * @param string $accessToken
+     * @param string $value
      * @param int    $expiresAt
      */
-    public function __construct($accessToken, $expiresAt = 0)
+    public function __construct(protected $value, $expiresAt = 0)
     {
-        $this->value = $accessToken;
         if ($expiresAt) {
             $this->setExpiresAtFromTimeStamp($expiresAt);
         }
@@ -87,7 +79,7 @@ class AccessToken
      */
     public function isAppAccessToken()
     {
-        return strpos($this->value, '|') !== false;
+        return str_contains($this->value, '|');
     }
 
     /**
@@ -141,7 +133,7 @@ class AccessToken
      *
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->getValue();
     }

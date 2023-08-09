@@ -66,11 +66,7 @@ class FacebookPageTabHelper extends FacebookCanvasHelper
      */
     public function getPageData($key, $default = null)
     {
-        if (isset($this->pageData[$key])) {
-            return $this->pageData[$key];
-        }
-
-        return $default;
+        return $this->pageData[$key] ?? $default;
     }
 
     /**

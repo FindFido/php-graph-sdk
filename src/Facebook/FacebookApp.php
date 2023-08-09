@@ -34,17 +34,12 @@ class FacebookApp implements \Serializable
     protected $id;
 
     /**
-     * @var string The app secret.
-     */
-    protected $secret;
-
-    /**
      * @param string $id
      * @param string $secret
      *
      * @throws FacebookSDKException
      */
-    public function __construct($id, $secret)
+    public function __construct($id, protected $secret)
     {
         if (!is_string($id)
           // Keeping this for BC. Integers greater than PHP_INT_MAX will make is_int() return false
@@ -53,7 +48,6 @@ class FacebookApp implements \Serializable
         }
         // We cast as a string in case a valid int was set on a 64-bit system and this is unserialised on a 32-bit system
         $this->id = (string) $id;
-        $this->secret = $secret;
     }
 
     /**
@@ -103,7 +97,7 @@ class FacebookApp implements \Serializable
      */
     public function unserialize($serialized)
     {
-        list($id, $secret) = explode('|', $serialized);
+        [$id, $secret] = explode('|', $serialized);
 
         $this->__construct($id, $secret);
     }

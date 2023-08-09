@@ -299,8 +299,6 @@ class FacebookRequest
 
     /**
      * Set the headers for this request.
-     *
-     * @param array $headers
      */
     public function setHeaders(array $headers)
     {
@@ -320,10 +318,8 @@ class FacebookRequest
     /**
      * Set the params for this request.
      *
-     * @param array $params
      *
      * @return FacebookRequest
-     *
      * @throws FacebookSDKException
      */
     public function setParams(array $params = [])
@@ -346,7 +342,6 @@ class FacebookRequest
     /**
      * Set the params for this request without filtering them first.
      *
-     * @param array $params
      *
      * @return FacebookRequest
      */
@@ -360,7 +355,6 @@ class FacebookRequest
     /**
      * Iterate over the params and pull out the file uploads.
      *
-     * @param array $params
      *
      * @return array
      */
@@ -380,7 +374,6 @@ class FacebookRequest
      * Add a file to be uploaded.
      *
      * @param string       $key
-     * @param FacebookFile $file
      */
     public function addFile($key, FacebookFile $file)
     {

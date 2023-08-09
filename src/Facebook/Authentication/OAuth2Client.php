@@ -41,7 +41,7 @@ class OAuth2Client
     /**
      * @const string The base authorization URL.
      */
-    const BASE_AUTHORIZATION_URL = 'https://www.facebook.com';
+    final public const BASE_AUTHORIZATION_URL = 'https://www.facebook.com';
 
     /**
      * The FacebookApp entity.
@@ -72,8 +72,6 @@ class OAuth2Client
     protected $lastRequest;
 
     /**
-     * @param FacebookApp    $app
-     * @param FacebookClient $client
      * @param string|null    $graphVersion The version of the Graph API to use.
      */
     public function __construct(FacebookApp $app, FacebookClient $client, $graphVersion = null)
@@ -215,10 +213,8 @@ class OAuth2Client
     /**
      * Send a request to the OAuth endpoint.
      *
-     * @param array $params
      *
      * @return AccessToken
-     *
      * @throws FacebookSDKException
      */
     protected function requestAnAccessToken(array $params)
@@ -251,11 +247,9 @@ class OAuth2Client
      * Send a request to Graph with an app access token.
      *
      * @param string                  $endpoint
-     * @param array                   $params
      * @param AccessToken|string|null $accessToken
      *
      * @return FacebookResponse
-     *
      * @throws FacebookResponseException
      */
     protected function sendRequestWithClientParams($endpoint, array $params, $accessToken = null)

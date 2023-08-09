@@ -31,44 +31,13 @@ namespace Facebook\FileUpload;
 class FacebookTransferChunk
 {
     /**
-     * @var FacebookFile The file to chunk during upload.
-     */
-    private $file;
-
-    /**
-     * @var int The ID of the upload session.
-     */
-    private $uploadSessionId;
-
-    /**
-     * @var int Start byte position of the next file chunk.
-     */
-    private $startOffset;
-
-    /**
-     * @var int End byte position of the next file chunk.
-     */
-    private $endOffset;
-
-    /**
-     * @var int The ID of the video.
-     */
-    private $videoId;
-
-    /**
-     * @param FacebookFile $file
      * @param int $uploadSessionId
      * @param int $videoId
      * @param int $startOffset
      * @param int $endOffset
      */
-    public function __construct(FacebookFile $file, $uploadSessionId, $videoId, $startOffset, $endOffset)
+    public function __construct(private readonly FacebookFile $file, private $uploadSessionId, private $videoId, private $startOffset, private $endOffset)
     {
-        $this->file = $file;
-        $this->uploadSessionId = $uploadSessionId;
-        $this->videoId = $videoId;
-        $this->startOffset = $startOffset;
-        $this->endOffset = $endOffset;
     }
 
     /**

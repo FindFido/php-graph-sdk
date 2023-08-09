@@ -65,7 +65,7 @@ class HttpClientsFactory
             return new FacebookCurlHttpClient();
         }
 
-        if ('guzzle' === $handler && !class_exists('GuzzleHttp\Client')) {
+        if ('guzzle' === $handler && !class_exists(\GuzzleHttp\Client::class)) {
             throw new Exception('The Guzzle HTTP client must be included in order to use the "guzzle" handler.');
         }
 
@@ -90,7 +90,7 @@ class HttpClientsFactory
             return new FacebookCurlHttpClient();
         }
 
-        if (class_exists('GuzzleHttp\Client')) {
+        if (class_exists(\GuzzleHttp\Client::class)) {
             return new FacebookGuzzleHttpClient();
         }
 

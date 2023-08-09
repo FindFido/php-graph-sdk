@@ -50,8 +50,6 @@ class AccessTokenMetadata
     protected static $dateProperties = ['expires_at', 'issued_at'];
 
     /**
-     * @param array $metadata
-     *
      * @throws FacebookSDKException
      */
     public function __construct(array $metadata)
@@ -73,13 +71,9 @@ class AccessTokenMetadata
      *
      * @return mixed
      */
-    public function getField($field, $default = null)
+    public function getField($field, mixed $default = null)
     {
-        if (isset($this->metadata[$field])) {
-            return $this->metadata[$field];
-        }
-
-        return $default;
+        return $this->metadata[$field] ?? $default;
     }
 
     /**
@@ -93,7 +87,7 @@ class AccessTokenMetadata
      * @deprecated 5.0.0 getProperty() has been renamed to getField()
      * @todo v6: Remove this method
      */
-    public function getProperty($field, $default = null)
+    public function getProperty($field, mixed $default = null)
     {
         return $this->getField($field, $default);
     }
@@ -107,7 +101,7 @@ class AccessTokenMetadata
      *
      * @return mixed
      */
-    public function getChildProperty($parentField, $field, $default = null)
+    public function getChildProperty($parentField, $field, mixed $default = null)
     {
         if (!isset($this->metadata[$parentField])) {
             return $default;
@@ -128,7 +122,7 @@ class AccessTokenMetadata
      *
      * @return mixed
      */
-    public function getErrorProperty($field, $default = null)
+    public function getErrorProperty($field, mixed $default = null)
     {
         return $this->getChildProperty('error', $field, $default);
     }
@@ -141,7 +135,7 @@ class AccessTokenMetadata
      *
      * @return mixed
      */
-    public function getMetadataProperty($field, $default = null)
+    public function getMetadataProperty($field, mixed $default = null)
     {
         return $this->getChildProperty('metadata', $field, $default);
     }

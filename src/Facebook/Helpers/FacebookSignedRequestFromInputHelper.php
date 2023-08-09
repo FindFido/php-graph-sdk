@@ -143,11 +143,7 @@ abstract class FacebookSignedRequestFromInputHelper
      */
     public function getRawSignedRequestFromPost()
     {
-        if (isset($_POST['signed_request'])) {
-            return $_POST['signed_request'];
-        }
-
-        return null;
+        return $_POST['signed_request'] ?? null;
     }
 
     /**
@@ -157,10 +153,6 @@ abstract class FacebookSignedRequestFromInputHelper
      */
     public function getRawSignedRequestFromCookie()
     {
-        if (isset($_COOKIE['fbsr_' . $this->app->getId()])) {
-            return $_COOKIE['fbsr_' . $this->app->getId()];
-        }
-
-        return null;
+        return $_COOKIE['fbsr_' . $this->app->getId()] ?? null;
     }
 }

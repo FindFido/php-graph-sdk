@@ -39,27 +39,15 @@ class RequestBodyMultipart implements RequestBodyInterface
     /**
      * @var string The boundary.
      */
-    private $boundary;
-
-    /**
-     * @var array The parameters to send with this request.
-     */
-    private $params;
-
-    /**
-     * @var array The files to send with this request.
-     */
-    private $files = [];
+    private readonly string $boundary;
 
     /**
      * @param array  $params   The parameters to send with this request.
      * @param array  $files    The files to send with this request.
      * @param string $boundary Provide a specific boundary.
      */
-    public function __construct(array $params = [], array $files = [], $boundary = null)
+    public function __construct(private readonly array $params = [], private readonly array $files = [], $boundary = null)
     {
-        $this->params = $params;
-        $this->files = $files;
         $this->boundary = $boundary ?: uniqid();
     }
 
@@ -101,7 +89,6 @@ class RequestBodyMultipart implements RequestBodyInterface
      * Get the string needed to transfer a file.
      *
      * @param string       $name
-     * @param FacebookFile $file
      *
      * @return string
      */
@@ -138,7 +125,6 @@ class RequestBodyMultipart implements RequestBodyInterface
     /**
      * Returns the params as an array of nested params.
      *
-     * @param array $params
      *
      * @return array
      */
@@ -149,7 +135,7 @@ class RequestBodyMultipart implements RequestBodyInterface
         $result = [];
 
         foreach ($params as $param) {
-            list($key, $value) = explode('=', $param, 2);
+            [$key, $value] = explode('=', $param, 2);
             $result[urldecode($key)] = urldecode($value);
         }
 
@@ -159,7 +145,6 @@ class RequestBodyMultipart implements RequestBodyInterface
     /**
      * Get the headers needed before transferring the content of a POST file.
      *
-     * @param FacebookFile $file
      *
      * @return string
      */
